@@ -3,10 +3,11 @@ package br.com.hrdev.JDBCProject;
 import java.awt.Dimension;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 
 import br.com.hrdev.JDBCProject.utils.Config;
 import br.com.hrdev.JDBCProject.utils.Text;
@@ -23,10 +24,11 @@ public class JDBCProject extends JFrame {
 			setupProperties();
 			setupFrame();
 			// TODO: 
+			// DatabaseFactory.close(DatabaseFactory.getInstance());
+			
 			setVisible(true);
 		} catch(Exception ex){
-			JOptionPane.showMessageDialog(this, "Fatal Erro: " + ex.toString(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
-			ex.printStackTrace();
+			Logger.getLogger(JDBCProject.class.getName()).log(Level.SEVERE, "Fatal Error", ex);
 			System.exit(-1);
 		}
 	}
