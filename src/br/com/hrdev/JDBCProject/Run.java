@@ -1,4 +1,4 @@
-package br.com.hrdev.JDBCProject;
+package br.com.hrdev.jdbcproject;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -9,7 +9,7 @@ public class Run implements Runnable {
 	public void run() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new JDBCProject();
+			new Application();
 		} catch(Exception e){
 			e.printStackTrace();
 		}

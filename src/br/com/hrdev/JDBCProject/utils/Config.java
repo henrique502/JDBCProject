@@ -1,4 +1,4 @@
-package br.com.hrdev.JDBCProject.utils;
+package br.com.hrdev.jdbcproject.utils;
 
 import java.util.Properties;
 

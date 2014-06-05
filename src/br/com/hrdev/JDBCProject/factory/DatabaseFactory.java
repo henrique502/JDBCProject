@@ -1,4 +1,4 @@
-package br.com.hrdev.JDBCProject.factory;
+package br.com.hrdev.jdbcproject.factory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import br.com.hrdev.JDBCProject.utils.Config;
+import br.com.hrdev.jdbcproject.utils.Config;
 
 public class DatabaseFactory {
 	
