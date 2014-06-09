@@ -1,6 +1,7 @@
 package br.com.hrdev.jdbcproject;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
-import br.com.hrdev.jdbcproject.views.Login;
+import br.com.hrdev.jdbcproject.views.LoginView;
 import br.com.hrdev.jdbcproject.views.View;
 import br.com.hrdev.jdbcproject.utils.Config;
 import br.com.hrdev.jdbcproject.utils.Text;
@@ -32,7 +33,7 @@ public class Application extends JFrame {
 			setupProperties();
 			setupFrame();
 			
-			add(new Login(this), "login");
+			add(new LoginView(this), "login");
 			swap("login");
 			
 			setVisible(true);
@@ -91,6 +92,15 @@ public class Application extends JFrame {
 	 */
 	public void add(View panel, String panelName){
 		getContentPane().add(panel, panelName);
+	}
+	
+	public void clearAll() {
+		getContentPane().removeAll();
+		
+	}
+	
+	public void clear(Component comp) {
+		getContentPane().remove(comp);
 	}
 	
 	/**

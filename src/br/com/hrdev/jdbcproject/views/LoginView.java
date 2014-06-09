@@ -11,6 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -18,29 +19,40 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import br.com.hrdev.jdbcproject.Application;
+import br.com.hrdev.jdbcproject.controllers.LoginController;
 import br.com.hrdev.jdbcproject.utils.Text;
 
-public class Login extends View {
+public class LoginView extends View {
 
 	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordInput;
 	private JTextField usuarioInput;
 	private JComboBox tipoIpunt;
+	private JButton logarButton;
 	
 	
-	public Login(Application app){
+	public LoginView(Application app){
 		super(app);
 		
 		
 		setupLayout();
+		setupController();
+		
+		setEnabled(true);
 	}
 	
 	private void setupLayout() {
-		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         add(Box.createHorizontalGlue());
         add(setupLoginBox());
         add(Box.createHorizontalGlue());
+	}
+	
+	private void setupController(){
+		LoginController controller = new LoginController(this);
+		usuarioInput.addKeyListener(controller);
+		passwordInput.addKeyListener(controller);
+		logarButton.addActionListener(controller);
 	}
 
 	private JPanel setupLoginBox() {
@@ -123,17 +135,46 @@ public class Login extends View {
 		box.add(passwordInput, constraints);
 		
 		/* Button Logar */
-		JButton button = new JButton(Text.key("login_label_logar"));
+		logarButton = new JButton(Text.key("login_label_logar"));
 		
 		
 		constraints = new GridBagConstraints();
 		constraints.gridwidth = 2;
 		constraints.gridx = 0;
 		constraints.gridy = 3;
-		box.add(button, constraints);
+		box.add(logarButton, constraints);
 		
 		box.setMaximumSize(new Dimension(280, 160));
 		
 		return box;
+	}
+
+	public int getType() {
+		return (this.tipoIpunt.getSelectedIndex() + 1);
+	}
+
+	public String getPassword() {
+		return new String(this.passwordInput.getPassword());
+	}
+
+	public String getUsername() {
+		return this.usuarioInput.getText();
+	}
+	
+	public Application getApplication() {
+		return this.app;
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		tipoIpunt.setEnabled(enabled);
+		usuarioInput.setEnabled(enabled);
+		passwordInput.setEnabled(enabled);
+		logarButton.setEnabled(enabled);
+	}
+
+	public void loginError(int code) {
+		JOptionPane.showMessageDialog(this, Text.key("login_error_" + code), Text.key("login_error_title"), JOptionPane.ERROR_MESSAGE);
+		passwordInput.setText("");
 	}
 }
