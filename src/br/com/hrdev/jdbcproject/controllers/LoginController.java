@@ -5,9 +5,13 @@ import java.awt.event.KeyEvent;
 
 import br.com.hrdev.jdbcproject.Application;
 import br.com.hrdev.jdbcproject.dao.LoginDao;
+import br.com.hrdev.jdbcproject.dao.LoginDaoSQL;
 import br.com.hrdev.jdbcproject.exceptions.LoginException;
+import br.com.hrdev.jdbcproject.models.Cliente;
+import br.com.hrdev.jdbcproject.models.Funcionario;
 import br.com.hrdev.jdbcproject.models.Usuario;
-import br.com.hrdev.jdbcproject.utils.UserSession;
+import br.com.hrdev.jdbcproject.utils.Config;
+import br.com.hrdev.jdbcproject.utils.Session;
 import br.com.hrdev.jdbcproject.views.ClienteDashboardView;
 import br.com.hrdev.jdbcproject.views.FuncionarioDashboardView;
 import br.com.hrdev.jdbcproject.views.LoginView;
@@ -34,7 +38,7 @@ public class LoginController extends Controller {
 	
 	private void checkCredentials(){
 		view.setEnabled(false);
-		LoginDao dao = new LoginDao();
+		LoginDao dao = new LoginDaoSQL();
 		
 		try {
 			int type = view.getType();
@@ -49,9 +53,14 @@ public class LoginController extends Controller {
 			
 			Usuario usuario = dao.tryLogin(type, username, password);
 			
+			
+			
+			if(Config.DEBUG)
+				System.out.println("Login success: " + usuario + " (id: " + usuario.getId() + ")");
+			
 			switch(usuario.getTipo()){
-				case Usuario.CLIENTE : loadDashboardCliente(view.getApplication(), usuario); break;
-				case Usuario.FUNCIONARIO : loadDashboardFunctionario(view.getApplication(), usuario); break;
+				case Usuario.CLIENTE : loadDashboardCliente(view.getApplication(), dao.getClienteByUser(usuario)); break;
+				case Usuario.FUNCIONARIO : loadDashboardFunctionario(view.getApplication(), dao.getFuncionarioByUser(usuario)); break;
 				default: throw new LoginException(0);
 			}
 			
@@ -62,22 +71,18 @@ public class LoginController extends Controller {
 		view.setEnabled(true);
 	}
 
-	private void loadDashboardFunctionario(Application application, Usuario usuario) {
-		UserSession.create(usuario);
-		application.add(new FuncionarioDashboardView(application), "dashboard");
-		
-		//TODO: criar o resto de funcionarios.
-		
+	private void loadDashboardFunctionario(Application application, Funcionario funcionario) {
+		application.setSession(new Session(funcionario));
+		application.addPanel(new FuncionarioDashboardView(application), "dashboard");
+
 		application.swap("dashboard");
 		application.clear(view);
 	}
 
-	private void loadDashboardCliente(Application application, Usuario usuario) {
-		UserSession.create(usuario);
-		application.add(new ClienteDashboardView(application), "dashboard");
-		
-		//TODO: criar o resto de clientes.
-		
+	private void loadDashboardCliente(Application application, Cliente cliente) {
+		application.setSession(new Session(cliente));
+		application.addPanel(new ClienteDashboardView(application), "dashboard");
+
 		application.swap("dashboard");
 		application.clear(view);
 	}

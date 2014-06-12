@@ -2,11 +2,11 @@ package br.com.hrdev.jdbcproject.models;
 
 public class Usuario {
 
-	private int id;
-	private String nome;
-	private String username;
-	private char[] senha;
-	private int tipo;
+	protected int id;
+	protected String nome;
+	protected String username;
+	protected char[] senha;
+	protected int tipo;
 	
 	public static final int CLIENTE = 1;
 	public static final int FUNCIONARIO = 2;

@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import br.com.hrdev.jdbcproject.Application;
 import br.com.hrdev.jdbcproject.controllers.LoginController;
+import br.com.hrdev.jdbcproject.utils.Config;
 import br.com.hrdev.jdbcproject.utils.Text;
 
 public class LoginView extends View {
@@ -34,9 +35,13 @@ public class LoginView extends View {
 	public LoginView(Application app){
 		super(app);
 		
-		
 		setupLayout();
 		setupController();
+		
+		if(Config.DEBUG){
+			usuarioInput.setText("henrique");
+			passwordInput.setText("123456");
+		}
 		
 		setEnabled(true);
 	}

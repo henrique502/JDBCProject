@@ -7,7 +7,9 @@ import java.util.Properties;
  */
 public class Config {
 	
+	public static boolean DEBUG = false;
 	private static Properties prop = null;
+	
 	
 	/**
 	 * @param key
@@ -19,5 +21,7 @@ public class Config {
 	
 	public Config(Properties properties){
 		prop = properties;
+		if(key("debug") != null && key("debug").equals("true"))
+			DEBUG = true;
 	}
 }

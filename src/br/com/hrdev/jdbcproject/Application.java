@@ -12,18 +12,23 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.media.jai.operator.AddDescriptor;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
 import br.com.hrdev.jdbcproject.views.LoginView;
 import br.com.hrdev.jdbcproject.views.View;
 import br.com.hrdev.jdbcproject.utils.Config;
+import br.com.hrdev.jdbcproject.utils.Session;
 import br.com.hrdev.jdbcproject.utils.Text;
 
 public class Application extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Dimension size = new Dimension(950,600);
+	private Session session;
+	private JPanel mainPanel;
     
 	
 	public Application(){
@@ -33,7 +38,7 @@ public class Application extends JFrame {
 			setupProperties();
 			setupFrame();
 			
-			add(new LoginView(this), "login");
+			addPanel(new LoginView(this), "login");
 			swap("login");
 			
 			setVisible(true);
@@ -54,7 +59,9 @@ public class Application extends JFrame {
 		
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new FullscreenManager());
 		
-		getContentPane().setLayout(new CardLayout());
+		mainPanel = new JPanel(new CardLayout());
+		
+		add(mainPanel);
 	}
 	
 	private void setupProperties() throws Exception {
@@ -81,8 +88,9 @@ public class Application extends JFrame {
 	 * @param String panelName
 	 */
 	public void swap(String panelName){
-		CardLayout card = (CardLayout) getContentPane().getLayout();
-		card.show(getContentPane(), panelName);
+		CardLayout card = (CardLayout) mainPanel.getLayout();
+		card.show(mainPanel, panelName);
+		repaint();
 	}
 	
 	/**
@@ -90,17 +98,25 @@ public class Application extends JFrame {
 	 * @param View panel
 	 * @param String panelName
 	 */
-	public void add(View panel, String panelName){
-		getContentPane().add(panel, panelName);
+	public void addPanel(View panel, String panelName){
+		mainPanel.add(panel, panelName);
 	}
 	
 	public void clearAll() {
-		getContentPane().removeAll();
+		mainPanel.removeAll();
 		
 	}
 	
 	public void clear(Component comp) {
-		getContentPane().remove(comp);
+		mainPanel.remove(comp);
+	}
+	
+	public void setSession(Session session) {
+		this.session = session;
+	}
+	
+	public Session getSession() {
+		return session;
 	}
 	
 	/**
